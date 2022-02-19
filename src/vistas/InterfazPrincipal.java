@@ -1,20 +1,21 @@
 package vistas;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.net.URL;
-import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JOptionPane;
 import procesos.Conexion;
+import procesos.GestionUsuario;
+import procesos.Hash;
+import procesos.Usuario;
 
 public class InterfazPrincipal extends javax.swing.JFrame {
     
     URL iconURL =this.getClass().getResource("/img/appIcon.png");
     ImageIcon icon = new ImageIcon(iconURL);
+    public Image back = new ImageIcon(getClass().getResource("/img/background.png")).getImage();
  
     public InterfazPrincipal() {
         initComponents();
@@ -27,8 +28,7 @@ public class InterfazPrincipal extends javax.swing.JFrame {
 
         menuFecha = new com.raven.datechooser.DateChooser();
         rbtnTipo = new javax.swing.ButtonGroup();
-        fondo = new assets.BackgroundPanel();
-        cover = new javax.swing.JLabel();
+        bgPanelPrincipal = new assets.BGPanel();
         panelPestanas = new javax.swing.JTabbedPane();
         panelPrincipal = new javax.swing.JPanel();
         panelMensaje = new assets.RoundPanel(25,new Color(239,239,239));
@@ -68,7 +68,7 @@ public class InterfazPrincipal extends javax.swing.JFrame {
         rbtEstudiante = new javax.swing.JRadioButton();
         rbtDocente = new javax.swing.JRadioButton();
         jLabel15 = new javax.swing.JLabel();
-        btnRegistrar3 = new javax.swing.JButton();
+        btnRegistrarForm = new javax.swing.JButton();
         btnRegRP = new javax.swing.JButton();
 
         menuFecha.setForeground(new java.awt.Color(80, 203, 107));
@@ -78,10 +78,8 @@ public class InterfazPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImages(null);
 
-        fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        cover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cover.png"))); // NOI18N
-        fondo.add(cover, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 890, 10));
+        bgPanelPrincipal.setBackground(new java.awt.Color(153, 255, 204));
+        bgPanelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelPestanas.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -135,14 +133,14 @@ public class InterfazPrincipal extends javax.swing.JFrame {
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(panelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(489, Short.MAX_VALUE))
+                .addContainerGap(623, Short.MAX_VALUE))
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(panelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelPestanas.addTab("Principal", panelPrincipal);
@@ -194,6 +192,11 @@ public class InterfazPrincipal extends javax.swing.JFrame {
         btnRegistrar.setRolloverEnabled(true);
         btnRegistrar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonIngreso-activo.png"))); // NOI18N
         btnRegistrar.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonIngreso-activo.png"))); // NOI18N
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
         panelContenido.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 350, -1, -1));
 
         panelIngreso.add(panelContenido, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, 312, 480));
@@ -321,19 +324,19 @@ public class InterfazPrincipal extends javax.swing.JFrame {
         jLabel15.setText("Registro de Usuarios");
         Registro.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, -1, -1));
 
-        btnRegistrar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistro-inactivo.png"))); // NOI18N
-        btnRegistrar3.setBorder(null);
-        btnRegistrar3.setBorderPainted(false);
-        btnRegistrar3.setContentAreaFilled(false);
-        btnRegistrar3.setRolloverEnabled(true);
-        btnRegistrar3.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistro-activo.png"))); // NOI18N
-        btnRegistrar3.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistro-activo.png"))); // NOI18N
-        btnRegistrar3.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrarForm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistro-inactivo.png"))); // NOI18N
+        btnRegistrarForm.setBorder(null);
+        btnRegistrarForm.setBorderPainted(false);
+        btnRegistrarForm.setContentAreaFilled(false);
+        btnRegistrarForm.setRolloverEnabled(true);
+        btnRegistrarForm.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistro-activo.png"))); // NOI18N
+        btnRegistrarForm.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistro-activo.png"))); // NOI18N
+        btnRegistrarForm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrar3ActionPerformed(evt);
+                btnRegistrarFormActionPerformed(evt);
             }
         });
-        Registro.add(btnRegistrar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 440, 160, 40));
+        Registro.add(btnRegistrarForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 440, 160, 40));
 
         panelRegistro.add(Registro, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 650, 520));
 
@@ -353,17 +356,19 @@ public class InterfazPrincipal extends javax.swing.JFrame {
 
         panelPestanas.addTab("Registro", panelRegistro);
 
-        fondo.add(panelPestanas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 2, -1, 630));
+        bgPanelPrincipal.add(panelPestanas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 2, 1020, 650));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bgPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(bgPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -377,22 +382,6 @@ public class InterfazPrincipal extends javax.swing.JFrame {
     private void btnGoIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoIngresarActionPerformed
         evt.toString();
         panelPestanas.setSelectedIndex(1);
-        String bases = "";
-
-                try {
-                    java.sql.Statement sql = Conexion.getConexion().createStatement();
-                    String consulta = "SELECT username_usr FROM usuario";
-                    ResultSet resultado = sql.executeQuery(consulta);
-
-                    while(resultado.next()) {
-                        bases += resultado.getString(1) + "\n";
-                    }
-                    //JOptionPane.showMessageDialog(null,bases);
-                    System.out.print(bases);
-
-                }catch(Exception ex){
-                    JOptionPane.showMessageDialog(null,"Error Conexion: "+ex.toString());
-                }
         
     }//GEN-LAST:event_btnGoIngresarActionPerformed
 
@@ -416,29 +405,38 @@ public class InterfazPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbtDocenteActionPerformed
 
-    private void btnRegistrar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrar3ActionPerformed
-        if (validarDatos()) {
-            if(txtPasswd.getText().equals(txtConfirmar.getText())){
-                //JOptionPane.showMessageDialog(null, "Usuario Ingresado Correctamente");
-                int tipo = (rbtEstudiante.isSelected()==true) ? 1:2;
-                String codigo     = generarCodigo((tipo==1) ? "L":"D"),
-                       username   = txtUsuario.getText(),
-                       password   = txtPasswd.getText(),
-                       nombre     = txtNombre.getText(),
-                       fecha_nac  = txtFechaNac.getText(),
-                       telefono   = txtTelefono.getText(),
-                       email      = txtCorreo.getText();
-                   int tipo_usr   = tipo,
-                       estado     = 1;
-                System.out.println(fecha_nac);
-                insertarUsuario(codigo,username, password, nombre, fecha_nac, telefono, email, tipo_usr, estado);
-            }else{
-                JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+    private void btnRegistrarFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarFormActionPerformed
+        GestionUsuario gUsr = new GestionUsuario();
+        String pwd = new String(txtPasswd.getPassword());
+        String pwdCifrado = Hash.sha1(pwd);
+        System.out.println(pwd);
+        System.out.println(pwdCifrado);
+        gUsr.comprobarUsuario(txtUsuario.getText());
+        if (txtPasswd.getText().equals(txtConfirmar.getText())) {
+            if (validarDatos()) {
+                if (gUsr.comprobarUsuario(txtUsuario.getText()) == 0) {
+                    if (gUsr.comprobarEmail(txtCorreo.getText())) {
+                        Usuario usr= new Usuario(null,txtUsuario.getText(),pwdCifrado,txtNombre.getText(),txtCorreo.getText(),txtTelefono.getText(),txtFechaNac.getText(),1,1);
+                        if (gUsr.registrarUsuario(usr)) {
+                            JOptionPane.showMessageDialog(null, "El usuario se registro existosamente");
+                            limpiar();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error: El usuario no se pudo registrar");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error: El correo electronico no es valido");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: El usuario ya existe");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Error: Es necesario llenar todos los datos");
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Es necesario llenar todos los campos para continuar");
+        } else {
+            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
         }
-    }//GEN-LAST:event_btnRegistrar3ActionPerformed
+        
+    }//GEN-LAST:event_btnRegistrarFormActionPerformed
 
     private void btnRegRPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegRPActionPerformed
         panelPestanas.setSelectedIndex(0);
@@ -456,6 +454,40 @@ public class InterfazPrincipal extends javax.swing.JFrame {
         System.out.println(rbtDocente.isSelected());
         
     }//GEN-LAST:event_rbtDocenteMouseClicked
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        GestionUsuario gUsr = new GestionUsuario();
+        String usr = txtUsuarioLogin.getText();
+        String pwd = new String(pwdContraLogin.getPassword());
+
+        if(!usr.equals("") &&! pwd.equals("")){
+            String pwdN =  Hash.sha1(pwd);
+            System.out.println(pwdN);
+            if((gUsr.comprobarUsuario(usr))==1 && (gUsr.comprobarContra(usr, pwdN))==1){
+            //JOptionPane.showMessageDialog(null, "Acceso concedido");
+                int tipo = gUsr.comprobarTipoUsr(usr);
+                   
+                switch(tipo) { 
+                    case 1:
+                        JOptionPane.showMessageDialog(null, "Estudiante");
+                    break;
+                    case 2:
+                        JOptionPane.showMessageDialog(null, "Profesor");
+                    break;
+                    case 3:
+                        JOptionPane.showMessageDialog(null, "Administrador");
+                    break;
+                    default: 
+                        JOptionPane.showMessageDialog(null, "Pinche Hacker fuera de mi sistema.");
+                    break;    
+                }
+            }else{
+                       JOptionPane.showMessageDialog(null, "Contraseña y o Usuario Incorrecto");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Debes llenar los campos para ingresar");
+        }            
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -494,14 +526,13 @@ public class InterfazPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Registro;
+    private assets.BGPanel bgPanelPrincipal;
     private javax.swing.JButton btnGoIngresar;
     private javax.swing.JButton btnGoRegistrar;
     private javax.swing.JButton btnRegLP;
     private javax.swing.JButton btnRegRP;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JButton btnRegistrar3;
-    private javax.swing.JLabel cover;
-    private assets.BackgroundPanel fondo;
+    private javax.swing.JButton btnRegistrarForm;
     private javax.swing.JLabel iconoLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -548,8 +579,19 @@ public class InterfazPrincipal extends javax.swing.JFrame {
         this.panelPestanas.setEnabledAt(1, false);
         this.panelPestanas.setEnabledAt(2, false);
         this.setIconImage(icon.getImage());
+        bgPanelPrincipal.setImagen(back);
         
     }
+       public void limpiar() {
+        txtUsuario.setText("");
+        txtPasswd.setText("");
+        txtNombre.setText("");
+        txtCorreo.setText("");
+        txtConfirmar.setText("");
+        txtTelefono.setText("");
+    }
+
+    
    private boolean validarDatos(){
        if (txtUsuario.getText().isEmpty()   &&
            txtTelefono.getText().isEmpty()  &&
@@ -563,23 +605,6 @@ public class InterfazPrincipal extends javax.swing.JFrame {
        }
        //System.out.println(txtFechaNac.toString());
        return true;
-   }
-   
-   private String generarCodigo( String tipoUsr){
-       int numero = (int) (Math.random() * 100000 + 1);
-       return tipoUsr+"00"+numero;
-   }
-   
-   private void insertarUsuario(String codigo,String username, String password, String nombre, String fecha_nac, String telefono, String email, int tipo_usr, int estado){
-       	try {
-            Statement sql = Conexion.getConexion().createStatement();
-            String consulta = "insert into usuario values ('"+codigo+"','"+username+"','"+password+"','"+nombre+"','"+fecha_nac+"','"+telefono+"','"+email+"','"+tipo_usr+"','"+estado+"');";
-            sql.execute(consulta);
-            //JOptionPane.showMessageDialog(null, "Alumno Ingresado correctamente");            
-	} catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"Error Conexion: "+e.toString());
-           
-	}
    }
                 
 }
