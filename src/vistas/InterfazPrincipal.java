@@ -420,6 +420,7 @@ public class InterfazPrincipal extends javax.swing.JFrame {
                         if (gUsr.registrarUsuario(usr)) {
                             JOptionPane.showMessageDialog(null, "El usuario se registro existosamente");
                             limpiar();
+                            panelPestanas.setSelectedIndex(1);
                         } else {
                             JOptionPane.showMessageDialog(null, "Error: El usuario no se pudo registrar");
                         }

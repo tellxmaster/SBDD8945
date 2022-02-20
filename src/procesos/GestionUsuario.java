@@ -20,7 +20,7 @@ public class GestionUsuario {
     
     
     private String generarCodigo( String tipoUsr){
-       int numero = (int) (Math.random() * 100000 + 1);
+       int numero = (int) (Math.random() * 1000000 + 900000);
        return tipoUsr+"00"+numero;
     }
     
